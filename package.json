@@ -1,0 +1,95 @@
+{
+  "name": "intl-segmenter",
+  "version": "1.0.0",
+  "description": "A high-performance wrapper around `Intl.Segmenter` for efficient text segmentation. This class resolves memory handling issues seen with large strings and can enhance performance by 50-500x. Only ~70 loc (with comments) and no dependencies.",
+  "license": "MIT",
+  "author": {
+    "name": "Jon Schlinkert",
+    "email": "jon.schlinkert@sellside.com",
+    "url": "https://github.com/jonschlinkert"
+  },
+  "repository": "jonschlinkert/intl-segmenter",
+  "homepage": "https://github.com/jonschlinkert/intl-segmenter",
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/intl-segmenter/issues"
+  },
+  "scripts": {
+    "eslint": "npx eslint --ext .ts .",
+    "test": "ts-mocha -r esbuild-register 'test/**/*.ts'",
+    "tsup": "npx tsup"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./*": {
+      "import": "./dist/*.mjs",
+      "require": "./dist/*.js"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.10",
+    "@typescript-eslint/eslint-plugin": "^8.14.0",
+    "@typescript-eslint/parser": "^8.14.0",
+    "esbuild-register": "^3.5.0",
+    "eslint": "^8.57.0",
+    "gulp-format-md": "^2.0.0",
+    "prettier": "^3.3.3",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  },
+  "keywords": [
+    "ansi",
+    "ascii",
+    "character",
+    "characters",
+    "chunk",
+    "chunks",
+    "emoji",
+    "emojis",
+    "graphemes",
+    "intl",
+    "segment",
+    "segmentation",
+    "segmenter",
+    "sentences",
+    "split",
+    "string",
+    "strings",
+    "terminal",
+    "text",
+    "tokenization",
+    "tokenize",
+    "unicode",
+    "utf-8",
+    "utf16",
+    "utf32",
+    "utf8",
+    "words"
+  ],
+  "verb": {
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "reflinks": [
+      "verb"
+    ],
+    "lint": {
+      "reflinks": true
+    }
+  }
+}
