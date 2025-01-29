@@ -22,7 +22,7 @@ $ pnpm install intl-segmenter
 
 If you do any text processing, parsing, or formatting, especially for the terminal, you know the challenges of handling special characters, emojis, and extended Unicode characters.
 
-The `Intl.Segmenter` object was introduced to simplify text segmentation and correctly handle these special characters. However, it has notable limitations and potential risks:
+The [`Intl.Segmenter`](https://www.raymondcamden.com/2024/11/20/counting-words-with-intlsegmenter) object was introduced to simplify text segmentation and correctly handle these special characters. However, it has notable limitations and potential risks:
 
 * Predictable "Maximum call stack exceeded" exceptions occur when strings exceed 40-50k characters.
 * Performance degrades geometrically as the number of non-ASCII/extended Unicode characters increases.
