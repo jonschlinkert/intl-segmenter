@@ -10,5 +10,6 @@ export default defineConfig({
   shims: true,
   splitting: false,
   sourcemap: true,
-  target: 'node18'
+  target: 'node18',
+  dts: true
 });
