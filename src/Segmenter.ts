@@ -1,34 +1,44 @@
 export class Segmenter extends Intl.Segmenter {
-  constructor(language: string, options: Intl.SegmenterOptions = {}) {
+  constructor(private readonly language: string, private readonly options: Intl.SegmenterOptions & { maxChunkLength?: number; } = {}) {
     super(language, options);
-    this.language = language;
-    this.options = options;
   }
 
-  * segment(input: string): Generator<Intl.Segment> {
+  segment(input: string): Intl.Segments {
     const { maxChunkLength = 100, ...options } = this.options;
-    let position = 0;
+    const language = this.language;
+    const findSafeBreakPoint = this.findSafeBreakPoint;
 
-    while (position < input.length) {
-      const remainingText = input.slice(position);
-      const chunkSize = Math.min(maxChunkLength, remainingText.length);
-      const potentialChunk = remainingText.slice(0, chunkSize);
+    return {
+      // eslint-disable-next-line no-unused-vars
+      containing(_codeUnitIndex?: number) {
+        // TODO: implement this method to comply an original interface
+        throw new Error('Not implemented');
+      },
+      *[Symbol.iterator](): Generator<Intl.SegmentData, undefined> {
+        let position = 0;
 
-      // Find a safe position to break the string
-      const breakPoint = this.findSafeBreakPoint(potentialChunk);
-      const chunk = potentialChunk.slice(0, breakPoint);
+        while (position < input.length) {
+          const remainingText = input.slice(position);
+          const chunkSize = Math.min(maxChunkLength, remainingText.length);
+          const potentialChunk = remainingText.slice(0, chunkSize);
 
-      // Process the chunk with Intl.Segmenter. Using this approach instead
-      // of super.segment() to avoid any potential side effects.
-      const segmenter = new Intl.Segmenter(this.language, { ...options });
-      const segments = segmenter.segment(chunk);
+          // Find a safe position to break the string
+          const breakPoint = findSafeBreakPoint(potentialChunk);
+          const chunk = potentialChunk.slice(0, breakPoint);
 
-      for (const segment of segments) {
-        yield segment;
+          // Process the chunk with Intl.Segmenter. Using this approach instead
+          // of super.segment() to avoid any potential side effects.
+          const segmenter = new Intl.Segmenter(language, { ...options });
+          const segments = segmenter.segment(chunk);
+
+          for (const segment of segments) {
+            yield segment;
+          }
+
+          position += breakPoint;
+        }
       }
-
-      position += breakPoint;
-    }
+    };
   }
 
   findSafeBreakPoint(input: string): number {
@@ -44,7 +54,7 @@ export class Segmenter extends Intl.Segmenter {
     return input.length;
   }
 
-  getSegments(input: string): Intl.Segment[] {
+  getSegments(input: string): Intl.SegmentData[] {
     const array = [];
 
     // A for loop is much faster than Array.from, it doesn't cause a
@@ -62,7 +72,7 @@ export class Segmenter extends Intl.Segmenter {
     input: string,
     language: string,
     options: Intl.SegmenterOptions = {}
-  ): Intl.Segment[] {
+  ): Intl.SegmentData[] {
     const segmenter = new this(language, options);
     return segmenter.getSegments(input);
   }
